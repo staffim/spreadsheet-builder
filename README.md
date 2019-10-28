@@ -16,7 +16,6 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class UsersListWorksheetBuilder extends AbstractWorksheetBuilder {
 
-
    public function getTableTitle(iterable $data): string
    {
        return sprintf('Users list at %s', (new \DateTime())->format('d.m.Y'));
@@ -42,7 +41,7 @@ class UsersListWorksheetBuilder extends AbstractWorksheetBuilder {
                'value' => static function (User $user) {
                    return $user->getEmail();
                },
-                'width' => 20,
+               'width' => 20,
            ],
            [
               'title' => 'About',
@@ -67,7 +66,6 @@ building whole spreadsheet
 ```php
 
 use Experium\SpreadsheetBuilder\Builder;
-
 
 /// ....
 
