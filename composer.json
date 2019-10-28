@@ -1,5 +1,5 @@
 {
-    "name": "experium/spreadsheet-builder",
+    "name": "staffim/spreadsheet-builder",
     "description": "Small library for PhpSpreadsheet that helps to build xlsx tables by configuring data columns",
     "keywords": ["xlsx", "PhpSpreadsheet", "table", "spreadsheet builder"],
     "type": "stable",

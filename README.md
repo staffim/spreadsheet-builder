@@ -11,7 +11,7 @@ Creating worksheet builder
 
 namespace Acme\Xlsx;
 
-use Experium\SpreadsheetBuilder\AbstractWorksheetBuilder;
+use Staffim\SpreadsheetBuilder\AbstractWorksheetBuilder;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class UsersListWorksheetBuilder extends AbstractWorksheetBuilder {
@@ -65,7 +65,7 @@ building whole spreadsheet
 
 ```php
 
-use Experium\SpreadsheetBuilder\Builder;
+use Staffim\SpreadsheetBuilder\Builder;
 
 /// ....
 

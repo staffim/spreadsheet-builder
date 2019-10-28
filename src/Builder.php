@@ -1,6 +1,6 @@
 <?php
 
-namespace Experium\SpreadsheetBuilder;
+namespace Staffim\SpreadsheetBuilder;
 
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
