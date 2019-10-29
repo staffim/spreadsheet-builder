@@ -101,7 +101,7 @@ abstract class AbstractWorksheetBuilder
                 $sheet->setCellValueByColumnAndRow(
                     $column,
                     $rowNumber,
-                    is_callable($columnsSetting['value']) ? $columnsSetting['value']($dataItem, $column, $rowNumber) : $columnsSetting['value']
+                    is_callable($columnsSetting['value']) ? $columnsSetting['value']($dataItem, $column, $rowNumber, $sheet) : $columnsSetting['value']
                 );
 
                 $this->appendImages($column, $rowNumber, $sheet);
