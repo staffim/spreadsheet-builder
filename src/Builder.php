@@ -64,7 +64,9 @@ class Builder
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getDefaultStyle()->getFont()->setName('Calibri');
 
-        /** @var AbstractWorksheetBuilder $worksheetBuilder */
+        /**
+         * @var AbstractWorksheetBuilder $worksheetBuilder
+         */
         foreach ($this->getWorksheetBuilders() as $index => $worksheetBuilder) {
             $spreadsheet->setActiveSheetIndex($index);
 
