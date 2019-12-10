@@ -28,7 +28,9 @@
     "phpunit/phpunit": "^8.5"
   },
   "autoload": {
-    "Staffim\\SpreadsheetBuilder\\": "src/"
+    "psr-4": {
+      "Staffim\\SpreadsheetBuilder\\": "src/"
+    }
   },
   "scripts": {
     "set-coding-standard": "vendor/bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard",
