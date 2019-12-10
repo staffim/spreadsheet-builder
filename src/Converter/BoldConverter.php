@@ -12,7 +12,6 @@ class BoldConverter implements RichTextElementConverterInterface
         return $element->getFont()->getBold();
     }
 
-
     public function toHtmlStyle(ITextElement $element): array
     {
         return [

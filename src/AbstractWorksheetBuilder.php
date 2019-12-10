@@ -161,7 +161,7 @@ abstract class AbstractWorksheetBuilder
         return $rowNumber;
     }
 
-    protected function prepareCellValue(string $value)
+    protected function prepareCellValue($value)
     {
         return $value;
     }
