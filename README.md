@@ -2,6 +2,12 @@
 
 Small library for [PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) that helps to build xlsx tables by configuring data columns.
 
+##### Install
+
+```
+composer reqiure staffim/spreadsheet-builder
+```
+
 ##### Examples
 
 Creating worksheet builder
