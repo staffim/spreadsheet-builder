@@ -1,30 +1,45 @@
 {
   "name": "staffim/spreadsheet-builder",
   "description": "Small library for PhpSpreadsheet that helps to build xlsx tables by configuring data columns",
+  "license": "MIT",
   "keywords": [
     "xlsx",
     "PhpSpreadsheet",
     "table",
     "spreadsheet builder"
   ],
-  "type": "stable",
-  "require": {
-    "php": "^7.2",
-    "phpoffice/phpspreadsheet": "^1.9"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-master"
-  },
-  "autoload": {
-    "psr-4": {
-      "Staffim\\SpreadsheetBuilder\\": "src/"
-    }
-  },
-  "license": "MIT",
   "authors": [
     {
       "name": "Aleksandr Klimenkov",
       "email": "alx.devel@gmail.com"
     }
-  ]
+  ],
+  "type": "stable",
+  "require": {
+    "php": "^7.2",
+    "ext-dom": "*",
+    "ext-mbstring": "*",
+    "phpoffice/phpspreadsheet": "^1.9",
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "escapestudios/symfony2-coding-standard": "^3.10"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": "^8.5"
+  },
+  "autoload": {
+    "Staffim\\SpreadsheetBuilder\\": "src/"
+  },
+  "scripts": {
+    "set-coding-standard": "vendor/bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard",
+    "phpcs": "vendor/bin/phpcs --exclude=Generic.Files.LineLength src && vendor/bin/phpcs --exclude=Generic.Files.LineLength tests",
+    "phpcbf": "vendor/bin/phpcbf src && vendor/bin/phpcbf tests",
+    "cs:fix": "php-cs-fixer fix src/ && php-cs-fixer fix tests/",
+    "post-install-cmd": [
+      "@set-coding-standard"
+    ],
+    "post-update-cmd": [
+      "@set-coding-standard"
+    ]
+  }
 }

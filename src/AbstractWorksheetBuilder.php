@@ -55,10 +55,9 @@ abstract class AbstractWorksheetBuilder
 
     /**
      * @param string $name
-     *
-     * @return array|mixed
+     * @return array
      */
-    public function getStyle(string $name)
+    public function getStyle(string $name): array
     {
         return $this->getStyles()[$name] ?? [];
     }
@@ -73,7 +72,7 @@ abstract class AbstractWorksheetBuilder
     {
         $tableTitle = $this->getTableTitle($data);
 
-        if ($this->getTableFirstRowNumber() > 1 && (bool) $tableTitle) {
+        if ($this->getTableFirstRowNumber() > 1 && (bool)$tableTitle) {
             $titleRowNumber = $this->getTableFirstRowNumber() - 1;
             $sheet->setCellValueByColumnAndRow(1, $titleRowNumber, $tableTitle);
             $sheet->mergeCellsByColumnAndRow(1, $titleRowNumber, count($this->getColumnsSettings($data)), $titleRowNumber);
@@ -86,6 +85,8 @@ abstract class AbstractWorksheetBuilder
      * @param iterable $data
      *
      * @return int
+     *
+     * @throws Exception
      */
     protected function buildTable(Worksheet $sheet, iterable $data)
     {
@@ -98,10 +99,12 @@ abstract class AbstractWorksheetBuilder
         foreach ($data as $dataItem) {
             foreach ($this->getColumnsSettings($data) as $columnIndex => $columnsSetting) {
                 $column = $columnIndex + 1;
+                $cellValue = is_callable($columnsSetting['value']) ? $columnsSetting['value']($dataItem, $column, $rowNumber) : $columnsSetting['value'];
+
                 $sheet->setCellValueByColumnAndRow(
                     $column,
                     $rowNumber,
-                    is_callable($columnsSetting['value']) ? $columnsSetting['value']($dataItem, $column, $rowNumber, $sheet) : $columnsSetting['value']
+                    $this->prepareCellValue($cellValue)
                 );
 
                 $this->appendImages($column, $rowNumber, $sheet);
@@ -137,7 +140,7 @@ abstract class AbstractWorksheetBuilder
 
         $tableTitle = $this->getTableTitle($data);
 
-        if ($this->getTableFirstRowNumber() > 1 && (bool) $tableTitle) {
+        if ($this->getTableFirstRowNumber() > 1 && (bool)$tableTitle) {
             $titleRowNumber = $this->getTableFirstRowNumber() - 1;
             $sheet->setCellValueByColumnAndRow(1, $titleRowNumber, $tableTitle);
             $sheet->mergeCellsByColumnAndRow(1, $titleRowNumber, count($this->getColumnsSettings($data)), $titleRowNumber);
@@ -156,6 +159,11 @@ abstract class AbstractWorksheetBuilder
         ++$rowNumber;
 
         return $rowNumber;
+    }
+
+    protected function prepareCellValue(string $value)
+    {
+        return $value;
     }
 
     /**
@@ -245,9 +253,12 @@ abstract class AbstractWorksheetBuilder
      */
     protected function getHeaderTitles(iterable $data): array
     {
-        return array_map(static function (array $columnSettings) {
-            return $columnSettings['title'];
-        }, $this->getColumnsSettings($data));
+        return array_map(
+            static function (array $columnSettings) {
+                return $columnSettings['title'];
+            },
+            $this->getColumnsSettings($data)
+        );
     }
 
     protected function findImage($content, $column, $row): string
@@ -261,9 +272,20 @@ abstract class AbstractWorksheetBuilder
                 $src = $srcMatches[1];
                 [$imageInfo, $imageData] = explode(',', $src);
 
+                $imgWidth = null;
+                $imgHeight = null;
+
+                if (preg_match('/< *img[^>]*width *= *"([0-9]*)"/i', $image, $imgWidthMatches)) {
+                    $imgWidth = (int)$imgWidthMatches[1];
+                }
+
+                if (preg_match('/< *img[^>]*height *= *"([0-9]*)" /i', $image, $imgHeightMatches)) {
+                    $imgHeight = (int)$imgHeightMatches[1];
+                }
+
                 if (preg_match('/\/(.*);/', $imageInfo, $extMatches)) {
                     $extension = $extMatches[1];
-                    $this->createImageFromData($imageData, $extension, $column, $row);
+                    $this->createImageFromData($imageData, $extension, $column, $row, $imgWidth, $imgHeight);
                 }
             }
         }
@@ -271,7 +293,7 @@ abstract class AbstractWorksheetBuilder
         return $content;
     }
 
-    protected function createImageFromData($data, $extension, $column, $row)
+    protected function createImageFromData($data, $extension, $column, $row, $width = null, $height = null)
     {
         $image = imagecreatefromstring(base64_decode($data));
 
@@ -281,6 +303,15 @@ abstract class AbstractWorksheetBuilder
         $drawing->setImageResource($image);
         $drawing->setRenderingFunction(constant(MemoryDrawing::class . '::RENDERING_' . $postfix));
         $drawing->setMimeType(constant(MemoryDrawing::class . '::MIMETYPE_' . $postfix));
+
+        $drawing->setResizeProportional(false);
+        if ($width) {
+            $drawing->setWidth($width);
+        }
+
+        if ($height) {
+            $drawing->setHeight($height);
+        }
 
         $this->images[$row][$column] = $drawing;
     }
@@ -307,10 +338,12 @@ abstract class AbstractWorksheetBuilder
             $style = is_callable($settings['style']) ? $settings['style']($columnNumber) : $settings['style'];
 
             if (!is_array($style)) {
-                throw new \RuntimeException(sprintf(
-                    'Style for column [%s] should be array or callable that return array',
-                    json_encode($settings)
-                ));
+                throw new \RuntimeException(
+                    sprintf(
+                        'Style for column [%s] should be array or callable that return array',
+                        json_encode($settings)
+                    )
+                );
             }
             $sheet->getStyleByColumnAndRow($columnNumber, $this->getTableFirstRowNumber(), $columnNumber, $maxRow)
                 ->applyFromArray($style);
@@ -333,7 +366,9 @@ abstract class AbstractWorksheetBuilder
             $rowDimension = $sheet->getRowDimension($row);
             $height = $rowDimension->getRowHeight() > 0 ? $rowDimension->getRowHeight() + self::CELL_PADDING : self::CELL_PADDING;
             $coordinates = $sheet->getCellByColumnAndRow($column, $row)->getCoordinate();
-            /** @var Drawing $drawing */
+            /**
+             * @var Drawing $drawing
+             */
             $drawing = $this->images[$row][$column];
             $drawing->setCoordinates($coordinates);
             $drawing->setOffsetY($height);

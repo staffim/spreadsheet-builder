@@ -1,7 +1,6 @@
-# spreadsheet-builder
+# Xlsx Spreadsheet builder
 
 Small library for [PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) that helps to build xlsx tables by configuring data columns.
-
 
 ##### Examples
 
@@ -71,10 +70,36 @@ use Staffim\SpreadsheetBuilder\Builder;
 
 $builder = new Builder([
     new \Acme\Xlsx\UsersListWorksheetBuilder(),
-])
+]);
 
 $users = $usersManager->fetchUsers();
 
 $spreadsheet = $builder->build([$users]);
 
 ```
+
+##### Working with html
+
+Use `\Staffim\SpreadsheetBuilder\RichTextToHtmlConverter` for converting html to
+`RichText` or vice versa:
+
+```php
+$converter = new \Staffim\SpreadsheetBuilder\RichTextToHtmlConverter(
+     [
+         new BoldConverter(),
+         new ItalicConverter(),
+         new UnderlineConverter(),
+         new ColorConverter(),
+     ]
+ );
+};
+
+$html = '<span style="color: brown; font-weight: bold">bold<br/></span>
+<i style="color: #ffcc01">italic</i><br/>
+<b style="text-decoration: underline">underline111</b>
+<span style="font-weight: bold; color: #AA0000">bold red</span>';
+
+$richText = $converter->convertFromHtml($html);
+```
+
+See [tests](https://github.com/staffim/spreadsheet-builder/tree/master/tests) for more examples
