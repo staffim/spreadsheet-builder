@@ -1,14 +1,14 @@
-# Xlsx Spreadsheet builder
+# Xlsx spreadsheet builder
 
 Small library for [PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) that helps to build xlsx tables by configuring data columns.
 
-##### Install
+#### Installation
 
 ```
 composer require staffim/spreadsheet-builder
 ```
 
-##### Examples
+#### Examples
 
 Creating worksheet builder
 ```php
@@ -84,7 +84,7 @@ $spreadsheet = $builder->build([$users]);
 
 ```
 
-##### Working with html
+#### Working with html
 
 Use `\Staffim\SpreadsheetBuilder\RichTextToHtmlConverter` for converting html to
 `RichText` or vice versa:
