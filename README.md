@@ -5,7 +5,7 @@ Small library for [PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet) 
 ##### Install
 
 ```
-composer reqiure staffim/spreadsheet-builder
+composer require staffim/spreadsheet-builder
 ```
 
 ##### Examples
