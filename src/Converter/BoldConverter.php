@@ -9,7 +9,9 @@ class BoldConverter implements RichTextElementConverterInterface
 {
     public function matchTextElement(ITextElement $element): bool
     {
-        return $element->getFont()->getBold();
+        $font = $element->getFont();
+
+        return $font && $font->getBold();
     }
 
     public function toHtmlStyle(ITextElement $element): array

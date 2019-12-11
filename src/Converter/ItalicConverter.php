@@ -9,7 +9,9 @@ class ItalicConverter implements RichTextElementConverterInterface
 {
     public function matchTextElement(ITextElement $element): bool
     {
-        return $element->getFont()->getItalic();
+        $font = $element->getFont();
+
+        return $font && $font->getItalic();
     }
 
     public function toHtmlStyle(ITextElement $element): array
