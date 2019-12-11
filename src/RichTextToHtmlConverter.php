@@ -40,7 +40,7 @@ class RichTextToHtmlConverter
     {
         $result = '';
         if (!$value instanceof RichText) {
-            return nl2br($value);
+            return nl2br(trim($value));
         }
 
         foreach ($value->getRichTextElements() as $richTextElement) {
@@ -57,7 +57,7 @@ class RichTextToHtmlConverter
             $result .= nl2br(count($style) > 0 ? sprintf('<span style="%s">%s</span>', $this->buildStyleString($style), $textContent) : $textContent);
         }
 
-        return $result;
+        return trim($result);
     }
 
     public function convertFromHtml(string $string): RichText
@@ -75,7 +75,11 @@ class RichTextToHtmlConverter
             $parts = array_merge($parts, $this->createTextElement($childNode));
         }
 
-        $result->setRichTextElements($parts);
+        if (count($parts) > 0) {
+            $result->setRichTextElements($parts);
+        } else {
+            $result->createText('');
+        }
 
         return $result;
     }
