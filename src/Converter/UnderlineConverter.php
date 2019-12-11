@@ -10,7 +10,9 @@ class UnderlineConverter implements RichTextElementConverterInterface
 {
     public function matchTextElement(ITextElement $element): bool
     {
-        return $element->getFont()->getUnderline() === Font::UNDERLINE_SINGLE;
+        $font = $element->getFont();
+
+        return $font && $font->getUnderline() === Font::UNDERLINE_SINGLE;
     }
 
     public function toHtmlStyle(ITextElement $element): array

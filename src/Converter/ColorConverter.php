@@ -160,7 +160,9 @@ class ColorConverter implements RichTextElementConverterInterface
 
     public function matchTextElement(ITextElement $element): bool
     {
-        return $element->getFont()->getColor()->getRGB() !== '000000';
+        $font = $element->getFont();
+
+        return $font && $font->getColor()->getRGB() !== '000000';
     }
 
     public function toHtmlStyle(ITextElement $element): array
