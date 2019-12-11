@@ -64,7 +64,7 @@ class RichTextToHtmlConverter
     {
         $result = new RichText();
 
-        $html = '<body>' . $this->prepareNewLines($string) . '</body>';
+        $html = '<?xml encoding="utf-8" ?><body>' . $this->prepareNewLines($string) . '</body>';
         $document = new \DOMDocument();
         $document->loadHtml($html);
 
