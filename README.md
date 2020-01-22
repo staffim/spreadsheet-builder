@@ -84,6 +84,31 @@ $spreadsheet = $builder->build([$users]);
 
 ```
 
+building from template xlsx with placeholders (this example replaced {title}, {content}, {foo} placeholders to $data array values in A1:D2 range of cells)
+
+template before
+
+![Template Before](https://i.ibb.co/qp2XQNX/ss-before.png)
+
+```
+
+$data = [
+    'title' => 'Example title',
+    'content' => 'Content for example',
+    'foo' => 'Bar',
+];
+
+$builder = new Builder([
+    new TemplateWorksheetBuilder('/path/from/template.xlsx', 'payment', 'A1:D2'),
+]);
+$spreadsheet = $builder->build([$data]);
+
+```
+
+Result after
+
+![Template After](https://i.ibb.co/tzFFDmx/ss-after.png)
+
 #### Working with html
 
 Use `\Staffim\SpreadsheetBuilder\RichTextToHtmlConverter` for converting html to
