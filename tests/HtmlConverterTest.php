@@ -2,21 +2,25 @@
 
 namespace Staffim\Tests;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PHPUnit\Framework\TestCase;
+use Staffim\SpreadsheetBuilder\Builder;
 use Staffim\SpreadsheetBuilder\Converter\BoldConverter;
 use Staffim\SpreadsheetBuilder\Converter\ColorConverter;
 use Staffim\SpreadsheetBuilder\Converter\ItalicConverter;
 use Staffim\SpreadsheetBuilder\Converter\UnderlineConverter;
 use Staffim\SpreadsheetBuilder\RichTextToHtmlConverter;
+use Staffim\SpreadsheetBuilder\TemplateWorksheetBuilder;
+use Staffim\Tests\Model\TestTableWorksheetBuilder;
 
 class HtmlConverterTest extends TestCase
 {
     public function testRunnableConverter()
     {
-        $spreadsheet = IOFactory::load(__DIR__ . '/resources/rich_text.xlsx');
+        $spreadsheet = IOFactory::load(__DIR__ . '/Resources/rich_text.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
 
         $html = $this->getConverter()->covertToHtml($worksheet->getCell('A1')->getValue());

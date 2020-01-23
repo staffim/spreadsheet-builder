@@ -29,7 +29,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Staffim\\SpreadsheetBuilder\\": "src/"
+      "Staffim\\SpreadsheetBuilder\\": "src/",
+      "Staffim\\Tests\\": "tests/"
     }
   },
   "scripts": {

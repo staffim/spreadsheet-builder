@@ -4,6 +4,7 @@ namespace Staffim\SpreadsheetBuilder;
 
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Builder
 {
@@ -21,15 +22,15 @@ class Builder
     }
 
     /**
-     * @param AbstractWorksheetBuilder $builder
+     * @param WorksheetBuilderInterface $builder
      */
-    public function registerWorksheetBuilder(AbstractWorksheetBuilder $builder): void
+    public function registerWorksheetBuilder(WorksheetBuilderInterface $builder): void
     {
         $this->worksheetBuilders[] = $builder;
     }
 
     /**
-     * @return AbstractWorksheetBuilder[]
+     * @return WorksheetBuilderInterface[]
      */
     public function getWorksheetBuilders(): array
     {
@@ -55,7 +56,7 @@ class Builder
      *
      * @throws Exception
      */
-    public function build(array $worksheetsData): Spreadsheet
+    public function build(iterable $worksheetsData): Spreadsheet
     {
         if (count($this->getWorksheetBuilders()) < 1) {
             throw new \RuntimeException('Worksheet builders are missing');
@@ -65,7 +66,7 @@ class Builder
         $spreadsheet->getDefaultStyle()->getFont()->setName('Calibri');
 
         /**
-         * @var AbstractWorksheetBuilder $worksheetBuilder
+         * @var WorksheetBuilderInterface $worksheetBuilder
          */
         foreach ($this->getWorksheetBuilders() as $index => $worksheetBuilder) {
             $spreadsheet->setActiveSheetIndex($index);

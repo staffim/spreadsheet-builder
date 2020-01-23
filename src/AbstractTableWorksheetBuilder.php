@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-abstract class AbstractWorksheetBuilder
+abstract class AbstractTableWorksheetBuilder implements WorksheetBuilderInterface
 {
     protected $images = [];
 
@@ -42,7 +42,7 @@ abstract class AbstractWorksheetBuilder
      *
      * @throws Exception
      */
-    public function build(Worksheet $sheet, iterable $data)
+    public function build(Worksheet $sheet, iterable $data): void
     {
         if (count($this->getColumnsSettings($data)) <= 0) {
             throw new \RuntimeException('Columns settings is missing');
