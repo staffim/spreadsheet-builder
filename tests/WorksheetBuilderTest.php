@@ -18,6 +18,8 @@ class WorksheetBuilderTestextends extends TestCase
 Next line',
             'H4' => 'Test author',
             'F3' => '',
+            'D3' => 'From Test author in 20.02.2002 
+f00, f00 and b@R',
             'J3' => '{content}',
         ];
 
@@ -25,6 +27,9 @@ Next line',
             'title' => 'Title for tests',
             'content' => 'Content for tests',
             'author' => 'Test author',
+            'foo' => 'f00',
+            'bar' => 'b@R',
+            'date' => '20.02.2002',
         ];
 
         $builder = new Builder();

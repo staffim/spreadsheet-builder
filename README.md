@@ -84,22 +84,25 @@ $spreadsheet = $builder->build([$users]);
 
 ```
 
-building from template xlsx with placeholders (this example replaced {title}, {content}, {foo} placeholders to $data array values in A1:D2 range of cells)
+building from template xlsx with placeholders (this example replaced {title}, {content}, {foo} placeholders to $data array values in A1:E2 range of cells)
 
 template before
 
-![Template Before](https://i.ibb.co/qp2XQNX/ss-before.png)
+![Template Before](https://i.ibb.co/9vS293F/ss-before.png)
 
 ```
 
 $data = [
-    'title' => 'Example title',
-    'content' => 'Content for example',
-    'foo' => 'Bar',
+    'title' => 'Test title',
+    'content' => 'Test content',
+    'author' => 'Test author',
+    'foo' => 'Foo',
+    'bar' => 'Bar',
+    'date' => '20.02.2002',
 ];
 
 $builder = new Builder([
-    new TemplateWorksheetBuilder('/path/from/template.xlsx', 'payment', 'A1:D2'),
+    new TemplateWorksheetBuilder('/path/from/template.xlsx', 'payment', 'A1:E2'),
 ]);
 $spreadsheet = $builder->build([$data]);
 
@@ -107,7 +110,7 @@ $spreadsheet = $builder->build([$data]);
 
 Result after
 
-![Template After](https://i.ibb.co/tzFFDmx/ss-after.png)
+![Template After](https://i.ibb.co/sgQK70D/ss-after.png)
 
 #### Working with html
 
