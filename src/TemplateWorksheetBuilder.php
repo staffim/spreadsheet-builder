@@ -59,17 +59,18 @@ class TemplateWorksheetBuilder implements WorksheetBuilderInterface
         foreach ($iterator as $rowNumber => $row) {
             $cellsIterator = $row->getCellIterator($this->cellRange[0][0], $this->cellRange[1][0]);
             foreach ($cellsIterator as $columnIndex => $cell) {
-                if ($cell->getFormattedValue() && preg_match('/{([a-zA-Z_-]*)}/i', $cell->getFormattedValue(), $matches)) {
-                    [,$placeholder] = $matches;
-                    $value = $this->replacePlaceholders($cell->getFormattedValue(), $placeholder, $data[$placeholder] ?? '');
-                    if ($cell->getValue() instanceof RichText) {
-                        /** @var RichText $value */
-                        $value = $cell->getValue();
-                        foreach ($value->getRichTextElements() as $richTextElement) {
-                            $richTextElement->setText($this->replacePlaceholders($richTextElement->getText(), $placeholder, $data[$placeholder] ?? ''));
+                if ($cell->getFormattedValue() && preg_match_all('/{(?<placeholder>[a-zA-Z_-]*)}/i', $cell->getFormattedValue(), $matches)) {
+                    foreach ($matches['placeholder'] as $placeholder) {
+                        $value = $this->replacePlaceholders($cell->getFormattedValue(), $placeholder, $data[$placeholder] ?? '');
+                        if ($cell->getValue() instanceof RichText) {
+                            /** @var RichText $value */
+                            $value = $cell->getValue();
+                            foreach ($value->getRichTextElements() as $richTextElement) {
+                                $richTextElement->setText($this->replacePlaceholders($richTextElement->getText(), $placeholder, $data[$placeholder] ?? ''));
+                            }
                         }
+                        $cell->setValue($value);
                     }
-                    $cell->setValue($value);
                 }
             }
         }
