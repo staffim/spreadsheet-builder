@@ -29,13 +29,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Staffim\\SpreadsheetBuilder\\": "src/",
-      "Staffim\\Tests\\": "tests/"
+      "Staffim\\SpreadsheetBuilder\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Staffim\\Tests\\": "tests/"
     }
   },
   "scripts": {

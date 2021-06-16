@@ -8,7 +8,7 @@ use Staffim\SpreadsheetBuilder\Builder;
 use Staffim\SpreadsheetBuilder\TemplateWorksheetBuilder;
 use Staffim\Tests\Model\TestTableWorksheetBuilder;
 
-class WorksheetBuilderTestextends extends TestCase
+class WorksheetBuilderTest extends TestCase
 {
     public function testBuildByTemplate()
     {
