@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PHPUnit\Framework\TestCase;
 use Staffim\SpreadsheetBuilder\Builder;
 use Staffim\SpreadsheetBuilder\Converter\BoldConverter;
@@ -94,7 +95,6 @@ class HtmlConverterTest extends TestCase
 
     public function testBuildFileFromHtml()
     {
-        $this->markTestSkipped();
         $html = '<span style="color: brown; font-weight: bold">bold<br/></span><i style="color: #ffcc01">italic</i><br/>
 <b style="text-decoration: underline">underline111</b>';
 
@@ -108,7 +108,7 @@ class HtmlConverterTest extends TestCase
         $writer = new Xlsx($spreadsheet);
         $resultFileName = sys_get_temp_dir() . '/' . 'test building.xlsx';
         $writer->save($resultFileName);
-        echo 'file saved in ' . $resultFileName;
+        // echo 'file saved in ' . $resultFileName;
 
         $this->assertNotNull($richText);
     }
