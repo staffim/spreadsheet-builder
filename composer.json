@@ -16,7 +16,7 @@
   ],
   "type": "stable",
   "require": {
-    "php": "^7.2",
+    "php": "^7.2|>=8.0",
     "ext-dom": "*",
     "ext-mbstring": "*",
     "phpoffice/phpspreadsheet": "^1.9"
@@ -30,6 +30,11 @@
   "autoload": {
     "psr-4": {
       "Staffim\\SpreadsheetBuilder\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
     }
   },
   "scripts": {
