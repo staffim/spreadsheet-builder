@@ -121,6 +121,23 @@ abstract class AbstractTableWorksheetBuilder implements WorksheetBuilderInterfac
         $sheet->getStyleByColumnAndRow(1, $firstTableRowNumber, $this->getColumnsCount($data), $rowNumber)
             ->applyFromArray($this->getStyle('cell'));
 
+        foreach ($data as $dataItem) {
+            foreach ($this->getColumnsSettings($data) as $columnIndex => $columnsSetting) {
+                if (array_key_exists('cellStyleBuilder', $columnsSetting)) {
+                    $style = is_callable($columnsSetting['cellStyleBuilder']) ? $columnsSetting['cellStyleBuilder']($dataItem, $columnIndex, $rowNumber, $sheet) : $columnsSetting['cellStyleBuilder'];
+
+                    if (!is_array($style)) {
+                        throw new \RuntimeException(sprintf(
+                            'Cell style for column [%s] should be array or callable that return array',
+                            json_encode($columnsSetting)
+                        ));
+                    }
+                    $sheet->getStyleByColumnAndRow($columnIndex, $this->getTableFirstRowNumber(), $columnIndex, $rowNumber)
+                        ->applyFromArray($style);
+                }
+            }
+        }
+
         $this->images = [];
 
         return $rowNumber;
