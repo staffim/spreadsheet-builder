@@ -121,10 +121,16 @@ abstract class AbstractTableWorksheetBuilder implements WorksheetBuilderInterfac
         $sheet->getStyleByColumnAndRow(1, $firstTableRowNumber, $this->getColumnsCount($data), $rowNumber)
             ->applyFromArray($this->getStyle('cell'));
 
-        foreach ($data as $dataItem) {
+        foreach ($data as $dataRowNumber => $dataItem) {
             foreach ($this->getColumnsSettings($data) as $columnIndex => $columnsSetting) {
+                $column = $columnIndex + 1;
                 if (array_key_exists('cellStyleBuilder', $columnsSetting)) {
-                    $style = is_callable($columnsSetting['cellStyleBuilder']) ? $columnsSetting['cellStyleBuilder']($dataItem, $columnIndex, $rowNumber, $sheet) : $columnsSetting['cellStyleBuilder'];
+                    $style = is_callable($columnsSetting['cellStyleBuilder']) ? $columnsSetting['cellStyleBuilder'](
+                        $dataItem,
+                        $column,
+                        $dataRowNumber,
+                        $sheet
+                    ) : $columnsSetting['cellStyleBuilder'];
 
                     if (!is_array($style)) {
                         throw new \RuntimeException(sprintf(
@@ -132,7 +138,12 @@ abstract class AbstractTableWorksheetBuilder implements WorksheetBuilderInterfac
                             json_encode($columnsSetting)
                         ));
                     }
-                    $sheet->getStyleByColumnAndRow($columnIndex, $this->getTableFirstRowNumber(), $columnIndex, $rowNumber)
+                    $sheet->getStyleByColumnAndRow(
+                        $column,
+                        $firstTableRowNumber + $dataRowNumber,
+                        $column,
+                        $firstTableRowNumber + $dataRowNumber
+                    )
                         ->applyFromArray($style);
                 }
             }
